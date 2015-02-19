@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "BNRDrawViewController.h"
 
 @interface AppDelegate ()
 
@@ -16,7 +17,15 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    // override point for customization after app launch
+    
+    BNRDrawViewController *dvc = [[BNRDrawViewController alloc] init];
+    self.window.rootViewController = dvc;
+    
+    self.window.backgroundColor = [UIColor whiteColor];
+    [self.window makeKeyAndVisible];
     return YES;
 }
 
