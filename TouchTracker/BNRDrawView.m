@@ -32,13 +32,15 @@
         UITapGestureRecognizer *doubleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTap:)];
         doubleTapRecognizer.numberOfTapsRequired = 2;
         doubleTapRecognizer.delaysTouchesBegan = YES;;
-        
         [self addGestureRecognizer:doubleTapRecognizer];
         
         UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
         tapRecognizer.delaysTouchesBegan = YES;
         [tapRecognizer requireGestureRecognizerToFail:doubleTapRecognizer];
         [self addGestureRecognizer:tapRecognizer];
+        
+        UILongPressGestureRecognizer *pressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
+        [self addGestureRecognizer:pressRecognizer];
     }
     
     return self;
@@ -49,15 +51,6 @@
 }
 
 # pragma mark - touches
-
-- (void) doubleTap:(UIGestureRecognizer *) gr {
-    NSLog(@"Recognized Double Tap");
-    
-    [self.linesInProgress removeAllObjects];
-    [self.finishedLines removeAllObjects];
-    [self setNeedsDisplay];
-}
-
 - (void)tap:(UIGestureRecognizer *) gr {
     NSLog(@"Recognized tap");
     
@@ -84,6 +77,28 @@
     }
     
     [self setNeedsDisplay];
+}
+
+- (void) doubleTap:(UIGestureRecognizer *) gr {
+    NSLog(@"Recognized Double Tap");
+    
+    [self.linesInProgress removeAllObjects];
+    [self.finishedLines removeAllObjects];
+    [self setNeedsDisplay];
+}
+
+- (void) longPress:(UIGestureRecognizer *) gr {
+    if (gr.state == UIGestureRecognizerStateBegan) {
+        CGPoint point = [gr locationInView:self];
+        self.selectedLine = [self lineAtPoint:point];
+        
+        if (self.selectedLine) {
+            [self.linesInProgress removeAllObjects];
+        } else if (gr.state == UIGestureRecognizerStateEnded) {
+            self.selectedLine = nil;
+        }
+        [self setNeedsDisplay];
+    }
 }
 
 - (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
