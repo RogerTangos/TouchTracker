@@ -9,6 +9,7 @@
 #import "BNRDrawView.h"
 #import "BNRLine.h"
 
+
 @interface BNRDrawView()
 
 @property (nonatomic, strong) NSMutableDictionary *linesInProgress;
