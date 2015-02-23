@@ -52,6 +52,17 @@
     return self;
 }
 
+- (int) numberOfLines {
+    int count;
+    
+    // check that they are non-nil before we add their counts
+    if (self.linesInProgress && self.finishedLines) {
+        count = [self.linesInProgress count] + [self.finishedLines count];
+    }
+    
+    return count;
+}
+
 - (BOOL) canBecomeFirstResponder {
     return YES;
 }
